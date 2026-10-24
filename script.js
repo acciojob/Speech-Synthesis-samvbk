@@ -33,10 +33,10 @@ voicesDropdown.addEventListener("change",()=>{
 
 speakButton.addEventListener('click',() => {
 	window.speechSynthesis.cancel();
-	// msg.text = document.querySelector("textarea").value;
+	msg.text = document.querySelector("textarea").value;
 	// window.speechSynthesis.speak(msg);
 
-	const utterence = new speechSynthesisUtterence(document.querySelector("textarea").value);
+	const utterence = new speechSynthesisUtterence(msg);
 	utterence.rate = parseFloat(speedRateInput.value);
 	utterence.pitch = parseFloat(pitchValueInput.value);
 
