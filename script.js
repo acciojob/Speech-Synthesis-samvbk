@@ -6,11 +6,11 @@ const options = document.querySelectorAll('[type="range"], [name="text"]');
 const speakButton = document.querySelector('#speak');
 const stopButton = document.querySelector('#stop');
 
-const speedRateInput = document.getElementById("rateValue");
-const rateValueDisplay = document.getElementById("speedRate");
+const speedRateInput = document.getElementById("speedRate");
+const rateValueDisplay = document.getElementById("rateValue");
 
-const pitchValueInput = document.getElementById("pitchValue");
-const pitchToneDisplay = document.getElementById("pitchTone");
+const pitchValueInput = document.getElementById("pitchTone");
+const pitchToneDisplay = document.getElementById("pitchValue");
 
 speedRateInput.addEventListener('input',() => {
 	rateValueDisplay.textContent = speedRateInput.value + "x";
