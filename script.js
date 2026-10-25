@@ -9,37 +9,54 @@ const stopButton = document.querySelector('#stop');
 const speedRateInput = document.getElementById("speedRate");
 const rateValueDisplay = document.getElementById("rateValue");
 
-const pitchValueInput = document.getElementById("pitchValue");
-const pitchToneDisplay = document.getElementById("pitchTone");
+const pitchToneInput = document.getElementById("pitchTone");
+const pitchValueDisplay = document.getElementById("pitchValue");
+
+
+
+function populateVoices() {
+	voices = window.speechSynthesis.getVoices();
+	voicesDropdown.innerHTML = '<option value="">Select A Voice</option>';
+	voices.forEach((voice, i) => {
+        voicesDropdown.add(new Option(voice.name, i));
+    });
+	if (voices.length > 0) {
+        msg.voice = voices[0];
+    }
+}
+window.speechSynthesis.onvoiceschanged = populateVoices;
+populateVoices();
+
+
 
 speedRateInput.addEventListener('input',() => {
 	rateValueDisplay.textContent = speedRateInput.value + "x";
-	msg.rate = parseFloat(speedRateInput.value);
+	msg.rate = Number(speedRateInput.value);
 });
 
-pitchValueInput.value = 1;
-pitchToneDisplay.textContent = pitchValueInput.value;
-pitchValueInput.addEventListener('input',() => {
-	pitchToneDisplay.textContent = pitchValueInput.value;
-	msg.pitch = parseFloat(pitchValueInput.value);
+pitchToneInput.value = 1;
+pitchValueDisplay.textContent = pitchToneInput.value;
+
+pitchToneInput.addEventListener("input", () => {
+    pitchValueDisplay.textContent = pitchToneInput.value;
+    msg.pitch = Number(pitchToneInput.value);
 });
 
-window.speechSynthesis.onvoiceschanged = () => {
-	voices = window.speechSynthesis.getVoices();
-	msg.voice = voices[0];
-	voices.forEach((voice,i) => voicesDropdown.options[i] = new Option(voice.name,i));
-};
+
 
 voicesDropdown.addEventListener("change",()=>{
-	speech.voice = voices[voicesDropdown.value];
+	const selectedVoice = voices[voicesDropdown.value];
+	if (selectedVoice) {
+		msg.voice = selectedVoice;
+	}
 });
 
 
 speakButton.addEventListener('click',() => {
 	window.speechSynthesis.cancel();
 	msg.text = document.querySelector("textarea").value;
-	msg.rate = parseFloat(speedRateInput.value);
-	msg.ton = parseFloat(pitchValueInput.value);
+	msg.rate = Number(speedRateInput.value);
+	msg.pitch = Number(pitchToneInput.value);
 	// window.speechSynthesis.speak(msg);
 
 	// const utterance = new speechSynthesisUtterance(msg);
