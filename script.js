@@ -24,7 +24,7 @@ function populateVoices() {
         msg.voice = voices[0];
     }
 }
-window.speechSynthesis.onvoiceschanged = populateVoices;
+window.speechSynthesis.addEventListener("voiceschanged", populateVoices);
 populateVoices();
 
 
@@ -52,18 +52,25 @@ voicesDropdown.addEventListener("change",()=>{
 });
 
 
-speakButton.addEventListener('click',() => {
-	window.speechSynthesis.cancel();
-	msg.text = document.querySelector("textarea").value;
-	msg.rate = Number(speedRateInput.value);
-	msg.pitch = Number(pitchToneInput.value);
-	// window.speechSynthesis.speak(msg);
+speakButton.addEventListener("click", () => {
+    window.speechSynthesis.cancel();
 
-	// const utterance = new speechSynthesisUtterance(msg);
-	// utterance.rate = parseFloat(speedRateInput.value);
-	// utterance.pitch = parseFloat(pitchValueInput.value);
+    const utterance = new SpeechSynthesisUtterance(
+        document.querySelector("textarea").value
+    );
 
-	window.speechSynthesis.speak(msg);
+    utterance.rate = Number(speedRateInput.value);
+    utterance.pitch = Number(pitchToneInput.value);
+
+    const selectedVoice = voices[voicesDropdown.value];
+    if (selectedVoice) {
+        utterance.voice = selectedVoice;
+    }
+
+    utterance.onstart = () => console.log("Speech started");
+    utterance.onerror = (event) => console.error("Speech error:", event.error);
+
+    window.speechSynthesis.speak(utterance);
 });
 
 stopButton.addEventListener('click',() => {
